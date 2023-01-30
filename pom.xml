@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.bill</groupId>
+    <artifactId>mysql-gui</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <name>mysql-gui</name>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.7</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.49</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/itext-asian -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.lowagie/itext-rtf -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext-rtf</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>7.0.3</version>
+        </dependency>
+    </dependencies>
+    <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.4.1</version>
+                    <configuration>
+                        <appendAssemblyId>false</appendAssemblyId>
+                        <finalName>mysql-gui</finalName>
+                        <descriptorRefs>
+                            <!--将依赖的jar包中的class文件打进生成的jar包-->
+                            <defcriptorRef>jar-with-dependencies</defcriptorRef>
+                        </descriptorRefs>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <!--指定入口函数-->
+                                <mainClass>com.bill.MysqlGUI</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>make-assembly</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>assembly</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- IDEA Gui Designer Plugin -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>ideauidesigner-maven-plugin</artifactId>
+                    <version>1.0-beta-1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>javac2</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+<!---->
+                    <configuration>
+                        <fork>true</fork>
+                        <debug>true</debug>
+                        <failOnError>true</failOnError>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+   <!-- <build>
+        <finalName>mysql-gui</finalName>
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+&lt;!&ndash;                            <classpathPrefix>lib/</classpathPrefix>&ndash;&gt;
+                            <mainClass>com.bill.MysqlGUI</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>-->
+    <!--<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        &lt;!&ndash; 生成的jar中，包含pom.xml和pom.properties这两个文件 &ndash;&gt;
+                        &lt;!&ndash;                        <addMavenDescriptor>true</addMavenDescriptor>&ndash;&gt;
+                        &lt;!&ndash; 生成MANIFEST.MF的设置 &ndash;&gt;
+                        <manifest>
+                            &lt;!&ndash;这个属性特别关键，如果没有这个属性，有时候我们引用的包maven库
+                            下面可能会有多个包，并且只有一个是正确的，其余的可能是带时间戳的，
+                            此时会在classpath下面把那个带时间戳的给添加上去，然后我们
+                            在依赖打包的时候，打的是正确的，所以两头会对不上，报错。&ndash;&gt;
+                            <useUniqueVersions>false</useUniqueVersions>
+                            &lt;!&ndash; 为依赖包添加路径, 这些路径会写在MANIFEST文件的Class-Path下 &ndash;&gt;
+                            &lt;!&ndash; 这个jar所依赖的jar包添加classPath的时候的前缀，如果这个
+                            jar本身和依赖包在同一级目录，则不需要添加&ndash;&gt;
+                            <classpathPrefix>lib/</classpathPrefix>
+                            &lt;!&ndash; jar启动入口类&ndash;&gt;
+                            <mainClass>com.bill.MysqlGUI</mainClass>
+                        </manifest>
+                        &lt;!&ndash;                        <manifestEntries>&ndash;&gt;
+                        &lt;!&ndash;                            &lt;!&ndash; 在Class-Path下添加配置文件的路径 &ndash;&gt;&ndash;&gt;
+                        &lt;!&ndash;                            &lt;!&ndash;                            <Class-Path>../config</Class-Path>&ndash;&gt;&ndash;&gt;
+                        &lt;!&ndash;                            &lt;!&ndash; 假如这个项目可能要引入一些外部资源，但是你打包的时候并不想把&ndash;&gt;
+                        &lt;!&ndash;                            这些资源文件打进包里面，这个时候你必须在这边额外指定一些这些资源&ndash;&gt;
+                        &lt;!&ndash;                            文件的路径，这个位置指定的话，要根据你预期的这些位置去设置，我这边&ndash;&gt;
+                        &lt;!&ndash;                            所有jar都在lib下，资源文件都在config下，lib和config是同级的 &ndash;&gt;&ndash;&gt;
+                        &lt;!&ndash;                            &lt;!&ndash; 同时还需要注意另外一个问题，假如你的pom文件里面配置了&ndash;&gt;
+                        &lt;!&ndash;                            <scope>system</scope>,就是你依赖是你本地的资源，这个时候使用&ndash;&gt;
+                        &lt;!&ndash;                            这个插件，classPath里面是不会添加，所以你得手动把这个依赖添加进&ndash;&gt;
+                        &lt;!&ndash;                            这个地方，用空格隔开就行&ndash;&gt;&ndash;&gt;
+                        &lt;!&ndash;                            <Class-Path></Class-Path>&ndash;&gt;
+                        &lt;!&ndash;                        </manifestEntries>&ndash;&gt;
+                    </archive>
+                    &lt;!&ndash; jar包的位置&ndash;&gt;
+                    <outputDirectory>${project.build.directory}/</outputDirectory>
+                    <includes>
+                        &lt;!&ndash; 打jar包时，只打包class文件 &ndash;&gt;
+                        &lt;!&ndash; 有时候可能需要一些其他文件，这边可以配置，包括剔除的文件等等&ndash;&gt;
+                        <include>**/*.class</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>&lt;!&ndash;阶段&ndash;&gt;
+                        <goals>
+                            <goal>copy-dependencies</goal>&lt;!&ndash;目标&ndash;&gt;
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            &lt;!&ndash;已存在的Release版本不重复copy&ndash;&gt;
+                            <overWriteReleases>false</overWriteReleases>
+                            &lt;!&ndash;已存在的SnapShot版本不重复copy&ndash;&gt;
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            &lt;!&ndash;不存在或者有更新版本的依赖才copy&ndash;&gt;
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            &lt;!&ndash; IDEA Gui Designer Plugin &ndash;&gt;
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>-->
+</project>
